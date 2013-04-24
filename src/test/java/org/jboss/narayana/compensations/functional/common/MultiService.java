@@ -10,10 +10,15 @@ import javax.inject.Inject;
 public class MultiService {
 
     @Inject
+    DummyData dummyData;
+
+    @Inject
     SingleService singleService;
 
     @CompensationTransaction
     public void testsMulti(boolean throwException) throws MyApplicationException {
+
+        dummyData.setValue("blah");
 
         singleService.testSingle1(false);
         singleService.testSingle2(false);
@@ -27,6 +32,8 @@ public class MultiService {
     public void testAlternative(boolean throwException) throws MyApplicationException {
         singleService.testSingle1(false);
 
+        dummyData.setValue("blah");
+
         try {
             singleService.testSingle2(true);
         } catch (MyApplicationException e) {
@@ -37,5 +44,4 @@ public class MultiService {
             throw new MyApplicationException();
         }
     }
-
 }

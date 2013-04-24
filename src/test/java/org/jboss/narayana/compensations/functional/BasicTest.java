@@ -30,7 +30,7 @@ import javax.inject.Inject;
  * @author paul.robinson@redhat.com 22/03/2013
  */
 @RunWith(Arquillian.class)
-public class BasicTests {
+public class BasicTest {
 
 
 
@@ -46,7 +46,8 @@ public class BasicTests {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar")
                 .addPackages(true, "org.jboss.narayana.compensations")
                 .addAsManifestResource(new ByteArrayAsset("<interceptors><class>org.jboss.narayana.compensations.impl.CompensationInterceptor</class></interceptors>".getBytes()),
-                        ArchivePaths.create("beans.xml"));
+                        ArchivePaths.create("beans.xml"))
+                .addAsManifestResource("META-INF/services/javax.enterprise.inject.spi.Extension", "services/javax.enterprise.inject.spi.Extension");
 
         archive.delete(ArchivePaths.create("META-INF/MANIFEST.MF"));
 

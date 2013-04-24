@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * @author paul.robinson@redhat.com 22/03/2013
  */
 @RunWith(Arquillian.class)
-public class CompensationScopedTests {
+public class CompensationScopedTest {
 
     @Inject
     DummyData dummyData;
@@ -54,6 +54,7 @@ public class CompensationScopedTests {
 
     @After
     public void tearDown() {
+
         try {
             uba.close();
         } catch (Exception e) {
@@ -86,6 +87,19 @@ public class CompensationScopedTests {
         uba.begin();
         dummyData.setValue("1");
         Assert.assertEquals("1", dummyData.getValue());
+        uba.close();
+
+        assertContextUnavailable();
+    }
+
+    @Test
+    public void testSuspendResume() throws Exception {
+
+        assertContextUnavailable();
+
+        uba.begin();
+        dummyData.setValue("1");
+        Assert.assertEquals("1", dummyData.getValue());
         TxContext txContext1 = bam.suspend();
 
         assertContextUnavailable();
@@ -108,19 +122,10 @@ public class CompensationScopedTests {
         uba.close();
 
         assertContextUnavailable();
-
-
-    }
-
-    @Test
-    public void testSuspendResume() throws Exception {
-
-        assertContextUnavailable();
-        uba.begin();
-
     }
 
     private void assertContextUnavailable() {
+
         try {
             dummyData.getValue();
             Assert.fail("Context should not be active here");
