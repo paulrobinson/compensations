@@ -5,7 +5,9 @@ import com.arjuna.wst.SystemException;
 import com.arjuna.wst.UnknownTransactionException;
 import com.arjuna.wst.WrongStateException;
 import com.arjuna.wst11.BAParticipantManager;
+import org.jboss.narayana.compensations.api.CompensateWith;
 import org.jboss.narayana.compensations.api.ConfirmLogWith;
+import org.jboss.narayana.compensations.api.NoTransactionException;
 import org.jboss.narayana.compensations.api.TransactionLoggedHandler;
 
 import javax.interceptor.Interceptor;
@@ -22,6 +24,10 @@ public class ConfirmLogWithInterceptor extends ParticipantInterceptor {
 
     @Override
     protected BAParticipantManager enlistParticipant(BusinessActivityManager bam, Method method) throws WrongStateException, UnknownTransactionException, SystemException {
+
+        if (bam.currentTransaction() == null) {
+            throw new NoTransactionException("Methods annotated with '" + ConfirmLogWith.class.getName() + "' must be invoked in the context of a compensation based transaction");
+        }
 
         Class<? extends TransactionLoggedHandler> transactionLogHandler = getTransactionLoggedHandler(method);
         CompensationParticipant compensationParticipant = new CompensationParticipant(null, null, transactionLogHandler);

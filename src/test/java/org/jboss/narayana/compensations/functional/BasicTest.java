@@ -2,6 +2,7 @@ package org.jboss.narayana.compensations.functional;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.narayana.compensations.api.NoTransactionException;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler2;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler3;
@@ -158,4 +159,19 @@ public class BasicTest {
         Assert.assertEquals(true, DummyTransactionLoggedHandler3.getCalled());
     }
 
+
+    @Test
+    public void testNoTransaction() throws Exception {
+
+        try {
+            singleService.noTransactionPresent();
+            Assert.fail();
+        } catch (NoTransactionException e) {
+            //expected
+        }
+
+        Assert.assertEquals(false, DummyCompensationHandler1.getCalled());
+        Assert.assertEquals(false, DummyConfirmationHandler1.getCalled());
+        Assert.assertEquals(false, DummyTransactionLoggedHandler1.getCalled());
+    }
 }

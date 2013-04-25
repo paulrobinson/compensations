@@ -53,4 +53,9 @@ public class SingleService {
             throw new MyApplicationException();
         }
     }
+
+    @CompensateWith(DummyCompensationHandler1.class)
+    public void noTransactionPresent() throws MyApplicationException {
+
+    }
 }
