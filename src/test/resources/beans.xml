@@ -1,0 +1,7 @@
+<interceptors>
+    <class>org.jboss.narayana.compensations.impl.CompensationInterceptor</class>
+    <class>org.jboss.narayana.compensations.impl.CompensateWithInterceptor</class>
+    <class>org.jboss.narayana.compensations.impl.ConfirmWithInterceptor</class>
+    <class>org.jboss.narayana.compensations.impl.ConfirmLogWithInterceptor</class>
+    <class>org.jboss.narayana.compensations.impl.CompensatIfFailsInterceptor</class>
+</interceptors>

@@ -1,22 +1,17 @@
-package org.jboss.narayana.compensations.functional;
+package org.jboss.narayana.compensations.functional.compensationManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.narayana.compensations.api.TransactionCompensatedException;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler2;
-import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler3;
 import org.jboss.narayana.compensations.functional.common.DummyConfirmationHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyConfirmationHandler2;
-import org.jboss.narayana.compensations.functional.common.DummyConfirmationHandler3;
 import org.jboss.narayana.compensations.functional.common.DummyTransactionLoggedHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyTransactionLoggedHandler2;
-import org.jboss.narayana.compensations.functional.common.DummyTransactionLoggedHandler3;
-import org.jboss.narayana.compensations.functional.common.MultiService;
 import org.jboss.narayana.compensations.functional.common.MyApplicationException;
-import org.jboss.narayana.compensations.functional.common.SingleService;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
@@ -30,15 +25,10 @@ import javax.inject.Inject;
  * @author paul.robinson@redhat.com 22/03/2013
  */
 @RunWith(Arquillian.class)
-public class BasicTest {
-
-
+public class CompensationManagerTest {
 
     @Inject
-    SingleService singleService;
-
-    @Inject
-    MultiService multiService;
+    CompensationManagerService compensationManagerService;
 
     @Deployment
     public static JavaArchive createTestArchive() {
@@ -67,81 +57,32 @@ public class BasicTest {
         DummyCompensationHandler2.reset();
         DummyConfirmationHandler2.reset();
         DummyTransactionLoggedHandler2.reset();
-        DummyCompensationHandler3.reset();
-        DummyConfirmationHandler3.reset();
-        DummyTransactionLoggedHandler3.reset();
     }
 
 
     @Test
     public void testSimple() throws Exception {
 
-        singleService.testSingle1(false);
-
-        Assert.assertEquals(false, DummyCompensationHandler1.getCalled());
-        Assert.assertEquals(true, DummyConfirmationHandler1.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler1.getCalled());
-    }
-
-    @Test
-    public void testMulti() throws Exception {
-
-
-        multiService.testsMulti(false);
-
-        Assert.assertEquals(false, DummyCompensationHandler1.getCalled());
-        Assert.assertEquals(true, DummyConfirmationHandler1.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler1.getCalled());
-
-        Assert.assertEquals(false, DummyCompensationHandler2.getCalled());
-        Assert.assertEquals(true, DummyConfirmationHandler2.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler2.getCalled());
-    }
-
-    @Test
-    public void testCompensation() throws Exception {
-
         try {
-            multiService.testsMulti(true);
-            Assert.fail();
+            compensationManagerService.doWork();
+            Assert.fail("Expected TransactionRolledBackException to be thrown, but it was not");
         } catch (MyApplicationException e) {
             //expected
         }
 
-        Assert.assertEquals(true, DummyCompensationHandler1.getCalled());
-        Assert.assertEquals(false, DummyConfirmationHandler1.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler1.getCalled());
-
-        Assert.assertEquals(true, DummyCompensationHandler2.getCalled());
-        Assert.assertEquals(false, DummyConfirmationHandler2.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler2.getCalled());
-    }
-
-    @Test
-    public void testAlternative() throws Exception {
-
-        multiService.testAlternative(false);
-
         Assert.assertEquals(false, DummyCompensationHandler1.getCalled());
-        Assert.assertEquals(true, DummyConfirmationHandler1.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler1.getCalled());
-
-        Assert.assertEquals(false, DummyCompensationHandler2.getCalled());
-        Assert.assertEquals(false, DummyConfirmationHandler2.getCalled());
-        Assert.assertEquals(false, DummyTransactionLoggedHandler2.getCalled());
-
-        Assert.assertEquals(false, DummyCompensationHandler3.getCalled());
-        Assert.assertEquals(true, DummyConfirmationHandler3.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler3.getCalled());
+        Assert.assertEquals(false, DummyConfirmationHandler1.getCalled());
+        Assert.assertEquals(false, DummyTransactionLoggedHandler1.getCalled());
     }
 
+
     @Test
-    public void testAlternativeThenFail() throws Exception {
+    public void testNested() throws Exception {
 
         try {
-            multiService.testAlternative(true);
-            Assert.fail();
-        } catch (MyApplicationException e) {
+            compensationManagerService.doWorkRecursively();
+            Assert.fail("Expected TransactionRolledBackException to be thrown, but it was not");
+        } catch (TransactionCompensatedException e) {
             //expected
         }
 
@@ -152,10 +93,42 @@ public class BasicTest {
         Assert.assertEquals(false, DummyCompensationHandler2.getCalled());
         Assert.assertEquals(false, DummyConfirmationHandler2.getCalled());
         Assert.assertEquals(false, DummyTransactionLoggedHandler2.getCalled());
+    }
 
-        Assert.assertEquals(true, DummyCompensationHandler3.getCalled());
-        Assert.assertEquals(false, DummyConfirmationHandler3.getCalled());
-        Assert.assertEquals(true, DummyTransactionLoggedHandler3.getCalled());
+
+    @Test
+    public void testSimpleCompensateIfFail() throws Exception {
+
+        try {
+            compensationManagerService.doWorkCompensateIfFail();
+            Assert.fail("Expected TransactionRolledBackException to be thrown, but it was not");
+        } catch (MyApplicationException e) {
+            //expected
+        }
+
+        Assert.assertEquals(false, DummyCompensationHandler1.getCalled());
+        Assert.assertEquals(false, DummyConfirmationHandler1.getCalled());
+        Assert.assertEquals(false, DummyTransactionLoggedHandler1.getCalled());
+    }
+
+
+    @Test
+    public void testNestedCompensateIfFail() throws Exception {
+
+        try {
+            compensationManagerService.doWorkRecursivelyCompensateIfFail();
+            Assert.fail("Expected TransactionRolledBackException to be thrown, but it was not");
+        } catch (TransactionCompensatedException e) {
+            //expected
+        }
+
+        Assert.assertEquals(true, DummyCompensationHandler1.getCalled());
+        Assert.assertEquals(false, DummyConfirmationHandler1.getCalled());
+        Assert.assertEquals(true, DummyTransactionLoggedHandler1.getCalled());
+
+        Assert.assertEquals(false, DummyCompensationHandler2.getCalled());
+        Assert.assertEquals(false, DummyConfirmationHandler2.getCalled());
+        Assert.assertEquals(false, DummyTransactionLoggedHandler2.getCalled());
     }
 
 }

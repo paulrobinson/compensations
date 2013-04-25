@@ -38,8 +38,7 @@ public class CompensationScopedTest {
 
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar")
                 .addPackages(true, "org.jboss.narayana.compensations")
-                .addAsManifestResource(new ByteArrayAsset("<interceptors><class>org.jboss.narayana.compensations.impl.CompensationInterceptor</class></interceptors>".getBytes()),
-                        ArchivePaths.create("beans.xml"))
+                .addAsManifestResource("beans.xml")
                 .addAsManifestResource("META-INF/services/javax.enterprise.inject.spi.Extension", "services/javax.enterprise.inject.spi.Extension");
 
         archive.delete(ArchivePaths.create("META-INF/MANIFEST.MF"));

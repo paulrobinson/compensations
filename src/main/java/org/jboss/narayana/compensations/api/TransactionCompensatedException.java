@@ -1,0 +1,17 @@
+package org.jboss.narayana.compensations.api;
+
+/**
+ * @author paul.robinson@redhat.com 25/04/2013
+ */
+public class TransactionCompensatedException extends CompensationTransactionRuntimeException{
+
+    public TransactionCompensatedException(String message) {
+
+        super(message);
+    }
+
+    public TransactionCompensatedException(String message, Throwable cause) {
+
+        super(message, cause);
+    }
+}
