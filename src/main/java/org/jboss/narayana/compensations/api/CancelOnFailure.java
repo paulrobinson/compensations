@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface CompensateIfFails {
+public @interface CancelOnFailure {
 
 }

@@ -1,6 +1,6 @@
 package org.jboss.narayana.compensations.impl;
 
-import org.jboss.narayana.compensations.api.CompensateIfFails;
+import org.jboss.narayana.compensations.api.CancelOnFailure;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -10,9 +10,9 @@ import javax.interceptor.InvocationContext;
 /**
  * @author paul.robinson@redhat.com 25/04/2013
  */
-@CompensateIfFails
+@CancelOnFailure
 @Interceptor
-public class CompensatIfFailsInterceptor {
+public class CancelOnFailureInterceptor {
 
     @Inject
     CompensationManagerImpl compensationManager;

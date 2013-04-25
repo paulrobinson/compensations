@@ -1,6 +1,6 @@
 package org.jboss.narayana.compensations.functional.compensationManager;
 
-import org.jboss.narayana.compensations.api.CompensateIfFails;
+import org.jboss.narayana.compensations.api.CancelOnFailure;
 import org.jboss.narayana.compensations.api.CompensateWith;
 import org.jboss.narayana.compensations.api.CompensationManager;
 import org.jboss.narayana.compensations.api.CompensationTransaction;
@@ -50,7 +50,7 @@ public class CompensationManagerService {
     @CompensateWith(DummyCompensationHandler1.class)
     @ConfirmWith(DummyConfirmationHandler1.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
-    @CompensateIfFails
+    @CancelOnFailure
     public void doWorkCompensateIfFail() throws MyApplicationException {
         throw new MyApplicationException();
     }
