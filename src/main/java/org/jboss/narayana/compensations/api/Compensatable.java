@@ -1,7 +1,7 @@
 package org.jboss.narayana.compensations.api;
 
-import javax.interceptor.InterceptorBinding;
 import javax.enterprise.util.Nonbinding;
+import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface CompensationTransaction {
+public @interface Compensatable {
 
     @Nonbinding
     public CompensationTransactionType value() default CompensationTransactionType.REQUIRED;

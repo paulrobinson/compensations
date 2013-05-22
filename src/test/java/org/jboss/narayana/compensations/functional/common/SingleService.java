@@ -1,7 +1,7 @@
 package org.jboss.narayana.compensations.functional.common;
 
+import org.jboss.narayana.compensations.api.Compensatable;
 import org.jboss.narayana.compensations.api.CompensateWith;
-import org.jboss.narayana.compensations.api.CompensationTransaction;
 import org.jboss.narayana.compensations.api.ConfirmLogWith;
 import org.jboss.narayana.compensations.api.ConfirmWith;
 
@@ -15,7 +15,7 @@ public class SingleService {
     @Inject
     DummyData dummyData;
 
-    @CompensationTransaction
+    @Compensatable
     @CompensateWith(DummyCompensationHandler1.class)
     @ConfirmWith(DummyConfirmationHandler1.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
@@ -28,7 +28,7 @@ public class SingleService {
         }
     }
 
-    @CompensationTransaction
+    @Compensatable
     @CompensateWith(DummyCompensationHandler2.class)
     @ConfirmWith(DummyConfirmationHandler2.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
@@ -41,7 +41,7 @@ public class SingleService {
         }
     }
 
-    @CompensationTransaction
+    @Compensatable
     @CompensateWith(DummyCompensationHandler3.class)
     @ConfirmWith(DummyConfirmationHandler3.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler3.class)

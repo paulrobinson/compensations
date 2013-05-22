@@ -8,19 +8,18 @@ import org.jboss.narayana.compensations.api.CompensationScoped;
 @CompensationScoped
 public class OrderData {
 
-    private String userName;
+    private String item;
 
     private String emailAddress;
 
+    public String getItem() {
 
-    public String getUserName() {
-
-        return userName;
+        return item;
     }
 
-    public void setUserName(String userName) {
+    public void setItem(String item) {
 
-        this.userName = userName;
+        this.item = item;
     }
 
     public String getEmailAddress() {

@@ -11,14 +11,17 @@ public class DummyCompensationHandler2 implements CompensationHandler {
 
     @Override
     public void compensate() {
+
         called = true;
     }
 
     public static boolean getCalled() {
+
         return called;
     }
 
     public static void reset() {
+
         called = false;
     }
 }

@@ -2,6 +2,7 @@ package org.jboss.narayana.compensations.impl;
 
 import org.jboss.narayana.compensations.api.CancelOnFailure;
 
+import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -12,6 +13,7 @@ import javax.interceptor.InvocationContext;
  */
 @CancelOnFailure
 @Interceptor
+@Priority(Interceptor.Priority.PLATFORM_BEFORE + 199)
 public class CancelOnFailureInterceptor {
 
     @Inject

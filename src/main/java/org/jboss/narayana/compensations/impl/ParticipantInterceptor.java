@@ -6,7 +6,6 @@ import com.arjuna.wst.SystemException;
 import com.arjuna.wst.UnknownTransactionException;
 import com.arjuna.wst.WrongStateException;
 import com.arjuna.wst11.BAParticipantManager;
-import org.jboss.narayana.compensations.api.NoTransactionException;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -40,6 +39,6 @@ public abstract class ParticipantInterceptor {
         return result;
     }
 
-    protected abstract BAParticipantManager enlistParticipant(BusinessActivityManager bam, Method method)  throws WrongStateException, UnknownTransactionException, SystemException;
+    protected abstract BAParticipantManager enlistParticipant(BusinessActivityManager bam, Method method) throws WrongStateException, UnknownTransactionException, SystemException;
 
 }

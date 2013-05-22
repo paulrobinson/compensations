@@ -11,14 +11,17 @@ public class DummyConfirmationHandler3 implements ConfirmationHandler {
 
     @Override
     public void confirm() {
+
         called = true;
     }
 
     public static Boolean getCalled() {
+
         return called;
     }
 
     public static void reset() {
+
         called = false;
     }
 }

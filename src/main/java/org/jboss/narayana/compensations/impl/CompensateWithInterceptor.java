@@ -9,6 +9,7 @@ import org.jboss.narayana.compensations.api.CompensateWith;
 import org.jboss.narayana.compensations.api.CompensationHandler;
 import org.jboss.narayana.compensations.api.NoTransactionException;
 
+import javax.annotation.Priority;
 import javax.interceptor.Interceptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -19,6 +20,7 @@ import java.util.UUID;
  */
 @CompensateWith
 @Interceptor
+@Priority(Interceptor.Priority.PLATFORM_BEFORE + 198)
 public class CompensateWithInterceptor extends ParticipantInterceptor {
 
     @Override

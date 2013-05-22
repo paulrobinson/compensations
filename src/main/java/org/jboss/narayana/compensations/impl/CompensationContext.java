@@ -8,11 +8,11 @@ import com.arjuna.wst.SystemException;
 import org.jboss.narayana.compensations.api.CompensationScoped;
 import org.jboss.narayana.compensations.api.CompensationTransactionRuntimeException;
 
+import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import java.lang.Class;
+import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class CompensationContext implements Context {
 
     //TODO: garbage collect. Register a participant and remove at end?
-    static final Map<TxContext, Map<String, Object>> localTXMap = new HashMap<TxContext, Map<String, Object>>();
+    private static final Map<TxContext, Map<String, Object>> localTXMap = new HashMap<TxContext, Map<String, Object>>();
 
     @Override
     public Class<? extends Annotation> getScope() {
@@ -29,16 +29,32 @@ public class CompensationContext implements Context {
     }
 
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
-        Bean bean = (Bean) contextual;
-        Map beans = getBeansForThisTransaction();
 
-        if(beans.containsKey(bean.getName())) {
-            return (T) beans.get(bean.getName());
-        } else {
-            T t = (T) bean.create(creationalContext);
-            beans.put(bean.getName(), t);
-            return t;
+        if (!isActive()) {
+            throw new ContextNotActiveException();
         }
+        if (contextual == null) {
+            throw new RuntimeException("contextual is null");
+        }
+
+        PassivationCapable bean = (PassivationCapable) contextual;
+        Map beans = getBeansForThisTransaction();
+        Object resource = beans.get(bean.getId());
+
+        if (resource != null) {
+            return (T) resource;
+        } else if (creationalContext != null) {
+            T t = contextual.create(creationalContext);
+            beans.put(bean.getId(), t);
+            return t;
+        } else {
+            return null;
+        }
+    }
+
+    public <T> T get(Contextual<T> contextual) {
+
+        return get(contextual, null);
     }
 
     private Map getBeansForThisTransaction() {
@@ -54,16 +70,6 @@ public class CompensationContext implements Context {
 
         } catch (SystemException e) {
             throw new CompensationTransactionRuntimeException("Error looking up Transaction", e);
-        }
-    }
-
-    public <T> T get(Contextual<T> contextual) {
-        Bean bean = (Bean) contextual;
-        Map beans = getBeansForThisTransaction();
-        if(beans.containsKey(bean.getName())) {
-            return (T) beans.get(bean.getName());
-        } else {
-            return null;
         }
     }
 

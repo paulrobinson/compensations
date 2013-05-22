@@ -1,6 +1,5 @@
 package org.jboss.narayana.compensations.api;
 
-import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -6,9 +6,10 @@ import com.arjuna.mw.wst11.BusinessActivityManagerFactory;
 import com.arjuna.mw.wst11.UserBusinessActivity;
 import com.arjuna.mw.wst11.UserBusinessActivityFactory;
 import com.arjuna.wst.TransactionRolledBackException;
-import org.jboss.narayana.compensations.api.CompensationTransaction;
+import org.jboss.narayana.compensations.api.Compensatable;
 import org.jboss.narayana.compensations.api.TransactionCompensatedException;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -16,8 +17,9 @@ import javax.interceptor.InvocationContext;
 /**
  * @author paul.robinson@redhat.com 22/03/2013
  */
-@CompensationTransaction
+@Compensatable
 @Interceptor
+@Priority(Interceptor.Priority.PLATFORM_BEFORE + 197)
 public class CompensationInterceptor {
 
     @AroundInvoke

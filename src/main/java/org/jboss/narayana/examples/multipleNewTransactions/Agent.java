@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.multipleNewTransactions;
 
-import org.jboss.narayana.compensations.api.CompensationTransaction;
+import org.jboss.narayana.compensations.api.Compensatable;
 import org.jboss.narayana.examples.multipleNewTransactions.order.OrderService;
 import org.jboss.narayana.examples.multipleNewTransactions.payment.PaymentService;
 
@@ -16,7 +16,7 @@ public class Agent {
      * A new compensation-scope is created for this method. If it fails,
      * the compensation handlers are fired
      */
-    @CompensationTransaction
+    @Compensatable
     public void buyItem(String user, String item, double amount) {
 
         OrderService orderService = new OrderService();

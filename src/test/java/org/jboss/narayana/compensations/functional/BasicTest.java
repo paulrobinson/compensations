@@ -17,7 +17,6 @@ import org.jboss.narayana.compensations.functional.common.MyApplicationException
 import org.jboss.narayana.compensations.functional.common.SingleService;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
@@ -32,7 +31,6 @@ import javax.inject.Inject;
  */
 @RunWith(Arquillian.class)
 public class BasicTest {
-
 
 
     @Inject

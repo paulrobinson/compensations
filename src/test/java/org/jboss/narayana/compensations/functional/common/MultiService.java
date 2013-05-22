@@ -1,6 +1,6 @@
 package org.jboss.narayana.compensations.functional.common;
 
-import org.jboss.narayana.compensations.api.CompensationTransaction;
+import org.jboss.narayana.compensations.api.Compensatable;
 
 import javax.inject.Inject;
 
@@ -15,7 +15,7 @@ public class MultiService {
     @Inject
     SingleService singleService;
 
-    @CompensationTransaction
+    @Compensatable
     public void testsMulti(boolean throwException) throws MyApplicationException {
 
         dummyData.setValue("blah");
@@ -28,8 +28,9 @@ public class MultiService {
         }
     }
 
-    @CompensationTransaction
+    @Compensatable
     public void testAlternative(boolean throwException) throws MyApplicationException {
+
         singleService.testSingle1(false);
 
         dummyData.setValue("blah");

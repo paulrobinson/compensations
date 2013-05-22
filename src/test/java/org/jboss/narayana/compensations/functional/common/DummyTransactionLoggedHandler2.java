@@ -12,11 +12,13 @@ public class DummyTransactionLoggedHandler2 implements TransactionLoggedHandler 
 
     @Override
     public void transactionLogged(boolean success) {
+
         called = true;
         this.success = success;
     }
 
     public static Boolean getCalled() {
+
         return called;
     }
 
@@ -26,6 +28,7 @@ public class DummyTransactionLoggedHandler2 implements TransactionLoggedHandler 
     }
 
     public static void reset() {
+
         called = false;
         success = null;
     }

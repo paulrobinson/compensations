@@ -1,9 +1,9 @@
 package org.jboss.narayana.compensations.functional.compensationManager;
 
 import org.jboss.narayana.compensations.api.CancelOnFailure;
+import org.jboss.narayana.compensations.api.Compensatable;
 import org.jboss.narayana.compensations.api.CompensateWith;
 import org.jboss.narayana.compensations.api.CompensationManager;
-import org.jboss.narayana.compensations.api.CompensationTransaction;
 import org.jboss.narayana.compensations.api.ConfirmLogWith;
 import org.jboss.narayana.compensations.api.ConfirmWith;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler2;
@@ -21,21 +21,23 @@ public class CompensationManagerService2 {
     @Inject
     CompensationManager compensationManager;
 
-    @CompensationTransaction
+    @Compensatable
     @CompensateWith(DummyCompensationHandler2.class)
     @ConfirmWith(DummyConfirmationHandler2.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
-    public void doWork() throws MyApplicationException{
+    public void doWork() throws MyApplicationException {
+
         compensationManager.setCompensateOnly();
         throw new MyApplicationException();
     }
 
-    @CompensationTransaction
+    @Compensatable
     @CompensateWith(DummyCompensationHandler2.class)
     @ConfirmWith(DummyConfirmationHandler2.class)
     @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
     @CancelOnFailure
-    public void doWorkCompensateIfFails() throws MyApplicationException{
+    public void doWorkCompensateIfFails() throws MyApplicationException {
+
         throw new MyApplicationException();
     }
 

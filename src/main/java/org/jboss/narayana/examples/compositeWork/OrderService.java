@@ -1,9 +1,9 @@
 package org.jboss.narayana.examples.compositeWork;
 
 import org.jboss.narayana.compensations.api.CompensateWith;
-import org.jboss.narayana.compensations.api.external.Transactional;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 /**
  * @author paul.robinson@redhat.com 21/03/2013

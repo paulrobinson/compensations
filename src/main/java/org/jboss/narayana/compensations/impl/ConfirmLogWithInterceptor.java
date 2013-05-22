@@ -5,11 +5,11 @@ import com.arjuna.wst.SystemException;
 import com.arjuna.wst.UnknownTransactionException;
 import com.arjuna.wst.WrongStateException;
 import com.arjuna.wst11.BAParticipantManager;
-import org.jboss.narayana.compensations.api.CompensateWith;
 import org.jboss.narayana.compensations.api.ConfirmLogWith;
 import org.jboss.narayana.compensations.api.NoTransactionException;
 import org.jboss.narayana.compensations.api.TransactionLoggedHandler;
 
+import javax.annotation.Priority;
 import javax.interceptor.Interceptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -20,6 +20,7 @@ import java.util.UUID;
  */
 @ConfirmLogWith
 @Interceptor
+@Priority(Interceptor.Priority.PLATFORM_BEFORE + 198)
 public class ConfirmLogWithInterceptor extends ParticipantInterceptor {
 
     @Override
