@@ -11,6 +11,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.narayana.compensations.functional.common.DummyData;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
@@ -37,7 +38,7 @@ public class CompensationScopedTest {
 
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar")
                 .addPackages(true, "org.jboss.narayana.compensations")
-                .addAsManifestResource("beans.xml")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("META-INF/services/javax.enterprise.inject.spi.Extension", "services/javax.enterprise.inject.spi.Extension");
 
         archive.delete(ArchivePaths.create("META-INF/MANIFEST.MF"));

@@ -2,10 +2,10 @@ package org.jboss.narayana.compensations.functional.compensationManager;
 
 import org.jboss.narayana.compensations.api.CancelOnFailure;
 import org.jboss.narayana.compensations.api.Compensatable;
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.compensations.api.CompensationManager;
-import org.jboss.narayana.compensations.api.ConfirmLogWith;
-import org.jboss.narayana.compensations.api.ConfirmWith;
+import org.jboss.narayana.compensations.api.TxLogged;
+import org.jboss.narayana.compensations.api.TxConfirm;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyConfirmationHandler1;
 import org.jboss.narayana.compensations.functional.common.DummyTransactionLoggedHandler1;
@@ -25,9 +25,9 @@ public class CompensationManagerService {
     CompensationManagerService2 compensationManagerService2;
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler1.class)
-    @ConfirmWith(DummyConfirmationHandler1.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
+    @TxConfirm(DummyConfirmationHandler1.class)
+    @TxLogged(DummyTransactionLoggedHandler1.class)
     public void doWork() throws MyApplicationException {
 
         compensationManager.setCompensateOnly();
@@ -35,9 +35,9 @@ public class CompensationManagerService {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler1.class)
-    @ConfirmWith(DummyConfirmationHandler1.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
+    @TxConfirm(DummyConfirmationHandler1.class)
+    @TxLogged(DummyTransactionLoggedHandler1.class)
     public void doWorkRecursively() throws MyApplicationException {
 
         try {
@@ -48,9 +48,9 @@ public class CompensationManagerService {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler1.class)
-    @ConfirmWith(DummyConfirmationHandler1.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
+    @TxConfirm(DummyConfirmationHandler1.class)
+    @TxLogged(DummyTransactionLoggedHandler1.class)
     @CancelOnFailure
     public void doWorkCompensateIfFail() throws MyApplicationException {
 
@@ -58,9 +58,9 @@ public class CompensationManagerService {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler1.class)
-    @ConfirmWith(DummyConfirmationHandler1.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
+    @TxConfirm(DummyConfirmationHandler1.class)
+    @TxLogged(DummyTransactionLoggedHandler1.class)
     public void doWorkRecursivelyCompensateIfFail() throws MyApplicationException {
 
         try {

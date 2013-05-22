@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.nonTransactionalWork;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ public class EmailSender {
     @Inject
     OrderData orderData;
 
-    @CompensateWith(NotifyCustomerOfCancellation.class)
+    @TxCompensate(NotifyCustomerOfCancellation.class)
     public void notifyCustomerOfPurchase(String item, String emailAddress) {
 
         orderData.setEmailAddress(emailAddress);

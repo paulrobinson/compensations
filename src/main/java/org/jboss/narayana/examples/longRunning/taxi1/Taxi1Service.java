@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.longRunning.taxi1;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.examples.longRunning.common.BookingData;
 import org.jboss.narayana.examples.longRunning.common.BookingException;
 
@@ -21,7 +21,7 @@ public class Taxi1Service {
      * New JTA Transaction in place. @NestedCompensation used, so compensation handler is passed to parent if succeeds
      * and is ignored if the method fails (immediate=false). It can be ignored as the transaction will rollback
      */
-    @CompensateWith(CancelBooking.class)
+    @TxCompensate(CancelBooking.class)
     @Transactional(REQUIRES_NEW)
     public void makeBooking(String item, String user) throws BookingException {
 

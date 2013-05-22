@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.multipleNewTransactions.payment;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -16,7 +16,7 @@ public class PaymentService {
     /*
      * New JTA Transaction in place, so @Compensatable is added to the parent compensation-scope.
      */
-    @CompensateWith(CancelPayment.class)
+    @TxCompensate(CancelPayment.class)
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void payForItem(String user, double amount) {
 

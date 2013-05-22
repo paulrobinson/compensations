@@ -5,7 +5,7 @@ import com.arjuna.wst.SystemException;
 import com.arjuna.wst.UnknownTransactionException;
 import com.arjuna.wst.WrongStateException;
 import com.arjuna.wst11.BAParticipantManager;
-import org.jboss.narayana.compensations.api.ConfirmLogWith;
+import org.jboss.narayana.compensations.api.TxLogged;
 import org.jboss.narayana.compensations.api.NoTransactionException;
 import org.jboss.narayana.compensations.api.TransactionLoggedHandler;
 
@@ -18,16 +18,16 @@ import java.util.UUID;
 /**
  * @author paul.robinson@redhat.com 22/03/2013
  */
-@ConfirmLogWith
+@TxLogged
 @Interceptor
 @Priority(Interceptor.Priority.PLATFORM_BEFORE + 198)
-public class ConfirmLogWithInterceptor extends ParticipantInterceptor {
+public class TxLoggedInterceptor extends ParticipantInterceptor {
 
     @Override
     protected BAParticipantManager enlistParticipant(BusinessActivityManager bam, Method method) throws WrongStateException, UnknownTransactionException, SystemException {
 
         if (bam.currentTransaction() == null) {
-            throw new NoTransactionException("Methods annotated with '" + ConfirmLogWith.class.getName() + "' must be invoked in the context of a compensation based transaction");
+            throw new NoTransactionException("Methods annotated with '" + TxLogged.class.getName() + "' must be invoked in the context of a compensation based transaction");
         }
 
         Class<? extends TransactionLoggedHandler> transactionLogHandler = getTransactionLoggedHandler(method);
@@ -39,8 +39,8 @@ public class ConfirmLogWithInterceptor extends ParticipantInterceptor {
 
         Annotation[] annotations = method.getAnnotations();
         for (Annotation a : annotations) {
-            if (a instanceof ConfirmLogWith) {
-                return ((ConfirmLogWith) a).value();
+            if (a instanceof TxLogged) {
+                return ((TxLogged) a).value();
             }
         }
         return null;

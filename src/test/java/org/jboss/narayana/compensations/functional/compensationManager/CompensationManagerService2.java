@@ -2,10 +2,10 @@ package org.jboss.narayana.compensations.functional.compensationManager;
 
 import org.jboss.narayana.compensations.api.CancelOnFailure;
 import org.jboss.narayana.compensations.api.Compensatable;
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.compensations.api.CompensationManager;
-import org.jboss.narayana.compensations.api.ConfirmLogWith;
-import org.jboss.narayana.compensations.api.ConfirmWith;
+import org.jboss.narayana.compensations.api.TxLogged;
+import org.jboss.narayana.compensations.api.TxConfirm;
 import org.jboss.narayana.compensations.functional.common.DummyCompensationHandler2;
 import org.jboss.narayana.compensations.functional.common.DummyConfirmationHandler2;
 import org.jboss.narayana.compensations.functional.common.DummyTransactionLoggedHandler2;
@@ -22,9 +22,9 @@ public class CompensationManagerService2 {
     CompensationManager compensationManager;
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler2.class)
-    @ConfirmWith(DummyConfirmationHandler2.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
+    @TxCompensate(DummyCompensationHandler2.class)
+    @TxConfirm(DummyConfirmationHandler2.class)
+    @TxLogged(DummyTransactionLoggedHandler2.class)
     public void doWork() throws MyApplicationException {
 
         compensationManager.setCompensateOnly();
@@ -32,9 +32,9 @@ public class CompensationManagerService2 {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler2.class)
-    @ConfirmWith(DummyConfirmationHandler2.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
+    @TxCompensate(DummyCompensationHandler2.class)
+    @TxConfirm(DummyConfirmationHandler2.class)
+    @TxLogged(DummyTransactionLoggedHandler2.class)
     @CancelOnFailure
     public void doWorkCompensateIfFails() throws MyApplicationException {
 

@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface CompensateWith {
+public @interface TxConfirm {
 
     @Nonbinding
-    public Class<? extends CompensationHandler> value() default DefaultCompensationHandler.class;
+    public Class<? extends ConfirmationHandler> value() default DefaultConfirmationHandler.class;
 }

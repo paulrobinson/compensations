@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.longRunning.hotel;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.examples.longRunning.common.BookingData;
 import org.jboss.narayana.examples.longRunning.common.BookingException;
 
@@ -21,7 +21,7 @@ public class HotelService {
      * New JTA Transaction in place. @CompensateWith used, so compensation handler is passed to parent if this ACID
      * transaction succeeds.
      */
-    @CompensateWith(CancelBooking.class)
+    @TxCompensate(CancelBooking.class)
     @Transactional(REQUIRES_NEW)
     public void makeBooking(String item, String user) throws BookingException {
 

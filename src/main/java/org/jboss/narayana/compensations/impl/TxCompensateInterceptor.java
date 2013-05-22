@@ -5,7 +5,7 @@ import com.arjuna.wst.SystemException;
 import com.arjuna.wst.UnknownTransactionException;
 import com.arjuna.wst.WrongStateException;
 import com.arjuna.wst11.BAParticipantManager;
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.compensations.api.CompensationHandler;
 import org.jboss.narayana.compensations.api.NoTransactionException;
 
@@ -18,16 +18,16 @@ import java.util.UUID;
 /**
  * @author paul.robinson@redhat.com 22/03/2013
  */
-@CompensateWith
+@TxCompensate
 @Interceptor
 @Priority(Interceptor.Priority.PLATFORM_BEFORE + 198)
-public class CompensateWithInterceptor extends ParticipantInterceptor {
+public class TxCompensateInterceptor extends ParticipantInterceptor {
 
     @Override
     protected BAParticipantManager enlistParticipant(BusinessActivityManager bam, Method method) throws WrongStateException, UnknownTransactionException, SystemException {
 
         if (bam.currentTransaction() == null) {
-            throw new NoTransactionException("Methods annotated with '" + CompensateWith.class.getName() + "' must be invoked in the context of a compensation based transaction");
+            throw new NoTransactionException("Methods annotated with '" + TxCompensate.class.getName() + "' must be invoked in the context of a compensation based transaction");
         }
 
         Class<? extends CompensationHandler> compensationHandler = getCompensationHandler(method);
@@ -39,8 +39,8 @@ public class CompensateWithInterceptor extends ParticipantInterceptor {
 
         Annotation[] annotations = method.getAnnotations();
         for (Annotation a : annotations) {
-            if (a instanceof CompensateWith) {
-                return ((CompensateWith) a).value();
+            if (a instanceof TxCompensate) {
+                return ((TxCompensate) a).value();
             }
         }
         return null;

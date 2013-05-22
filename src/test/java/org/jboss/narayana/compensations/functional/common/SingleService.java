@@ -1,9 +1,9 @@
 package org.jboss.narayana.compensations.functional.common;
 
 import org.jboss.narayana.compensations.api.Compensatable;
-import org.jboss.narayana.compensations.api.CompensateWith;
-import org.jboss.narayana.compensations.api.ConfirmLogWith;
-import org.jboss.narayana.compensations.api.ConfirmWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
+import org.jboss.narayana.compensations.api.TxLogged;
+import org.jboss.narayana.compensations.api.TxConfirm;
 
 import javax.inject.Inject;
 
@@ -16,9 +16,9 @@ public class SingleService {
     DummyData dummyData;
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler1.class)
-    @ConfirmWith(DummyConfirmationHandler1.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
+    @TxConfirm(DummyConfirmationHandler1.class)
+    @TxLogged(DummyTransactionLoggedHandler1.class)
     public void testSingle1(boolean throwException) throws MyApplicationException {
 
         dummyData.setValue("blah1");
@@ -29,9 +29,9 @@ public class SingleService {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler2.class)
-    @ConfirmWith(DummyConfirmationHandler2.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler2.class)
+    @TxCompensate(DummyCompensationHandler2.class)
+    @TxConfirm(DummyConfirmationHandler2.class)
+    @TxLogged(DummyTransactionLoggedHandler2.class)
     public void testSingle2(boolean throwException) throws MyApplicationException {
 
         dummyData.setValue("blah2");
@@ -42,9 +42,9 @@ public class SingleService {
     }
 
     @Compensatable
-    @CompensateWith(DummyCompensationHandler3.class)
-    @ConfirmWith(DummyConfirmationHandler3.class)
-    @ConfirmLogWith(DummyTransactionLoggedHandler3.class)
+    @TxCompensate(DummyCompensationHandler3.class)
+    @TxConfirm(DummyConfirmationHandler3.class)
+    @TxLogged(DummyTransactionLoggedHandler3.class)
     public void testSingle3(boolean throwException) throws MyApplicationException {
 
         dummyData.setValue("blah2");
@@ -54,7 +54,7 @@ public class SingleService {
         }
     }
 
-    @CompensateWith(DummyCompensationHandler1.class)
+    @TxCompensate(DummyCompensationHandler1.class)
     public void noTransactionPresent() throws MyApplicationException {
 
     }

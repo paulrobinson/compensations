@@ -1,6 +1,6 @@
 package org.jboss.narayana.examples.compositeWork;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -14,7 +14,7 @@ public class OrderService {
     OrderData orderData;
 
     @Transactional
-    @CompensateWith(EmailUser.class)
+    @TxCompensate(EmailUser.class)
     public void orderItem(String item, String user) {
 
         orderData.setItem(item);

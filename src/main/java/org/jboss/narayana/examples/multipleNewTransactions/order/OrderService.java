@@ -1,7 +1,7 @@
 package org.jboss.narayana.examples.multipleNewTransactions.order;
 
-import org.jboss.narayana.compensations.api.CompensateWith;
-import org.jboss.narayana.compensations.api.ConfirmWith;
+import org.jboss.narayana.compensations.api.TxCompensate;
+import org.jboss.narayana.compensations.api.TxConfirm;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -21,8 +21,8 @@ public class OrderService {
      *
      * How do i only trigger this only after commit?
      */
-    @CompensateWith(CancelOrder.class)
-    @ConfirmWith(ConfirmOrder.class)
+    @TxCompensate(CancelOrder.class)
+    @TxConfirm(ConfirmOrder.class)
     @Transactional(REQUIRES_NEW)
     public void orderItem(String item, String user) {
 
